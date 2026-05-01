@@ -1,0 +1,62 @@
+@import "../styles/theme";
+
+.champ-speech-bubble {
+  position: relative;
+  background: white;
+  border: 3px solid var(--primary);
+  border-radius: 18px;
+  padding: 15px 25px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--navy);
+  display: inline-block;
+  max-width: 180px; // Ensure it fits in sidebar
+  white-space: normal;
+  @extend .glass-panel;
+
+  // Default: Point Left (Bubble is to the right of Champ)
+  margin-left: 20px;
+  
+  .bubble-arrow {
+    position: absolute;
+    left: -14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 14px solid var(--primary);
+    
+    &::after {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: -10px;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-right: 14px solid white;
+    }
+  }
+
+  // Modifier: Point Right (Bubble is to the left of Champ)
+  &.point-right {
+    margin-left: 0;
+    margin-right: 20px;
+
+    .bubble-arrow {
+      left: auto;
+      right: -14px;
+      border-right: none;
+      border-left: 14px solid var(--primary);
+
+      &::after {
+        left: auto;
+        right: 4px;
+        border-right: none;
+        border-left: 14px solid white;
+      }
+    }
+  }
+}

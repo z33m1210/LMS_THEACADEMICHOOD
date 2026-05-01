@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+$hood-orange: #e67e22;
+$hood-navy: #2c3e50;
+$soft-bg: #F9FAFB;
+$glass-white: rgba(255, 255, 255, 0.75);
+$glass-border: rgba(255, 255, 255, 0.4);
+$glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+
+@mixin glass-card {
+  background: $glass-white;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid $glass-border;
+  box-shadow: $glass-shadow;
+  border-radius: 20px;
+}
+
+:root {
+  --primary: #{$hood-orange};
+  --navy: #{$hood-navy};
+  --bg-soft: #{$soft-bg};
+  --font-inter: 'Inter', sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-inter);
+  background-color: var(--bg-soft);
+  color: var(--navy);
+  -webkit-font-smoothing: antialiased;
+}
+
+.glass-card {
+  @include glass-card;
+}

@@ -1,0 +1,95 @@
+.grading-queue-container {
+  margin-top: 30px;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.missions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 25px;
+}
+
+.mission-card {
+  padding: 25px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  &:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  }
+
+  .mission-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .student-tag {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .avatar {
+        width: 32px;
+        height: 32px;
+        background: var(--primary);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 0.8rem;
+      }
+
+      span {
+        font-weight: 700;
+        color: var(--secondary);
+      }
+    }
+
+    .status {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      background: rgba(46, 204, 113, 0.1);
+      color: #27ae60;
+      border-radius: 20px;
+
+      &.urgent {
+        background: rgba(231, 76, 60, 0.1);
+        color: #e74c3c;
+        animation: pulseUrgent 2s infinite;
+      }
+    }
+  }
+
+  .mission-body {
+    h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--secondary);
+    }
+    p {
+      margin: 5px 0 0;
+      font-size: 0.85rem;
+      color: rgba(44, 62, 80, 0.5);
+    }
+  }
+
+  button {
+    width: 100%;
+    margin-top: auto;
+  }
+}
+
+@keyframes pulseUrgent {
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
+}

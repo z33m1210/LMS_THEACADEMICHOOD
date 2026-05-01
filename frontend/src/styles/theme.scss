@@ -1,0 +1,119 @@
+@use "sass:color";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+// Design Tokens
+$hood-orange: #e67e22;
+$hood-navy: #2c3e50;
+$soft-bg: #F9FAFB;
+$glass-white: rgba(255, 255, 255, 0.75);
+$glass-border: rgba(255, 255, 255, 0.4);
+$glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+
+:root {
+  --primary: #{$hood-orange};
+  --navy: #{$hood-navy};
+  --bg-soft: #{$soft-bg};
+  --font-inter: 'Inter', sans-serif;
+  --glass-bg: #{$glass-white};
+  --glass-border: #{$glass-border};
+}
+
+// Global Reset & Foundation
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-inter);
+  background-color: var(--bg-soft);
+  color: var(--navy);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+// Glassmorphism Utilities
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+}
+
+.glass-card {
+  @extend .glass-panel;
+  box-shadow: $glass-shadow;
+  border-radius: 20px;
+  padding: 24px;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.12);
+  }
+}
+
+// Premium Typography
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--navy);
+}
+
+// Squishy Primary Button
+.btn-squishy {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  &:hover {
+    transform: scale(1.05);
+    background: color.adjust($hood-orange, $lightness: 5%);
+    box-shadow: 0 6px 20px rgba(230, 126, 34, 0.4);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+// Layout Utilities
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.dashboard-main {
+  flex: 1;
+  padding: 50px 60px;
+  transition: margin-left 0.3s ease-in-out;
+  position: relative;
+}
+
+// Gradient Mesh Helper
+.gradient-mesh {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background-color: #F9FAFB;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(230, 126, 34, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(44, 62, 80, 0.1) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(230, 126, 34, 0.1) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(44, 62, 80, 0.15) 0px, transparent 50%);
+  filter: blur(80px);
+}

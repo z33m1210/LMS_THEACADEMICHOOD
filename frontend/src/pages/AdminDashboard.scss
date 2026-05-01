@@ -1,0 +1,78 @@
+@import "../styles/theme";
+
+.dashboard-header {
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  .welcome-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    padding: 30px 40px;
+  }
+}
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+
+  .stat-card {
+    @extend .glass-card;
+    padding: 40px;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+
+    .stat-accent {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+    }
+
+    .stat-label {
+      color: rgba(44, 62, 80, 0.5);
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 15px;
+    }
+
+    .stat-value {
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--navy);
+    }
+  }
+}
+
+.quick-actions-panel {
+  @extend .glass-card;
+  padding: 50px;
+
+  h3 {
+    font-weight: 900;
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+  }
+
+  p {
+    color: rgba(44, 62, 80, 0.7);
+    line-height: 1.8;
+    font-size: 1.05rem;
+    max-width: 800px;
+  }
+
+  .action-buttons {
+    margin-top: 30px;
+    display: flex;
+    gap: 15px;
+  }
+}

@@ -1,0 +1,306 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/client_v3"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int                 @id @default(autoincrement())
+  studentId     String?             @unique
+  email         String              @unique
+  password      String
+  name          String
+  phoneNumber   String?
+  role          String
+  refreshToken  String?
+  deletedAt     DateTime?
+  actionLogs    ActionLog[]
+  announcements Announcement[]
+  taughtBatches BatchTeacher[]
+  certificates  Certificate[]
+  enrollments   Enrollment[]
+  notifications Notification[]
+  placementTest PlacementTest?
+  submissions   Submission[]
+  comments      SubmissionComment[]
+  progress      UserProgress[]
+}
+
+model PlacementTest {
+  id             Int      @id @default(autoincrement())
+  studentId      Int      @unique
+  overallScore   Float
+  listeningScore Float?
+  speakingScore  Float?
+  readingScore   Float?
+  writingScore   Float?
+  testedAt       DateTime @default(now())
+  student        User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+}
+
+model Certificate {
+  id             Int      @id @default(autoincrement())
+  studentId      Int
+  courseId       Int
+  issuedAt       DateTime @default(now())
+  certificateUrl String
+  finalScore     Float?
+  course         Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  student        User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+}
+
+model Course {
+  id            Int            @id @default(autoincrement())
+  title         String
+  description   String
+  level         String
+  category      String
+  thumbnailUrl  String?
+  deletedAt     DateTime?
+  announcements Announcement[]
+  batches       Batch[]
+  certificates  Certificate[]
+  sections      Section[]
+}
+
+enum ActivityType {
+  LABEL
+  PAGE
+  RESOURCE
+  FORUM
+  ASSIGNMENT
+}
+
+model Batch {
+  id        Int            @id @default(autoincrement())
+  name      String
+  courseId  Int
+  deletedAt DateTime?
+  course    Course         @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  teachers  BatchTeacher[]
+  students  Enrollment[]
+  lessonOverrides     BatchLesson[]
+  assignmentOverrides BatchAssignment[]
+  sectionOverrides    BatchSection[]
+  activityOverrides   BatchActivity[]
+}
+
+model BatchSection {
+  id          Int       @id @default(autoincrement())
+  batchId     Int
+  sectionId   Int
+  title       String?
+  description String?
+  isHidden    Boolean   @default(false)
+  batch       Batch     @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  section     Section   @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+
+  @@unique([batchId, sectionId])
+}
+
+model BatchLesson {
+  id          Int       @id @default(autoincrement())
+  batchId     Int
+  lessonId    Int
+  title       String?
+  content     String?
+  videoUrl    String?
+  pdfUrl      String?
+  batch       Batch     @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  lesson      Lesson    @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([batchId, lessonId])
+}
+
+model BatchAssignment {
+  id              Int        @id @default(autoincrement())
+  batchId         Int
+  assignmentId    Int
+  title           String?
+  description     String?
+  weight          Float?
+  exerciseFileUrl String?
+  batch           Batch      @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  assignment      Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+
+  @@unique([batchId, assignmentId])
+}
+
+model BatchActivity {
+  id              Int      @id @default(autoincrement())
+  batchId         Int
+  activityId      Int
+  title           String?
+  description     String?
+  longContent     String?
+  exerciseFileUrl String?
+  isHidden        Boolean?
+  batch           Batch    @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  activity        Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+
+  @@unique([batchId, activityId])
+}
+
+model Section {
+  id          Int        @id @default(autoincrement())
+  courseId    Int
+  title       String
+  description String?
+  orderIndex  Int
+  meetingLink String?
+  meetingTime String?
+  deletedAt   DateTime?
+  lessons     Lesson[]
+  materials   Material[]
+  overrides   BatchSection[]
+  course      Course     @relation(fields: [courseId], references: [id], onDelete: Cascade)
+}
+
+model Lesson {
+  id          Int            @id @default(autoincrement())
+  sectionId   Int
+  title       String
+  content     String?
+  orderIndex  Int
+  deletedAt   DateTime?
+  assignments Assignment[]
+  activities  Activity[]
+  section     Section        @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  materials   Material[]
+  progress    UserProgress[]
+  overrides   BatchLesson[]
+}
+
+model Activity {
+  id              Int          @id @default(autoincrement())
+  lessonId        Int
+  type            ActivityType
+  title           String
+  description     String?
+  longContent     String?
+  exerciseFileUrl String?
+  orderIndex      Int          @default(0)
+  isHidden        Boolean      @default(false)
+  deletedAt       DateTime?
+  lesson          Lesson       @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  submissions     Submission[]
+  overrides       BatchActivity[]
+}
+
+model Material {
+  id           Int      @id @default(autoincrement())
+  type         String
+  url          String
+  originalName String?
+  fileSize     Int?
+  duration     String?
+  sectionId    Int?
+  lessonId     Int?
+  lesson       Lesson?  @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  section      Section? @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+}
+
+model Assignment {
+  id              Int          @id @default(autoincrement())
+  lessonId        Int
+  title           String
+  description     String
+  weight          Float        @default(0)
+  exerciseFileUrl String?
+  deletedAt       DateTime?
+  lesson          Lesson       @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  submissions     Submission[]
+  overrides       BatchAssignment[]
+}
+
+model Submission {
+  id           Int                 @id @default(autoincrement())
+  assignmentId Int?
+  activityId   Int?
+  studentId    Int
+  filePath     String
+  grade        Float?
+  status       String
+  createdAt    DateTime            @default(now())
+  deletedAt    DateTime?
+  student      User                @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  assignment   Assignment?         @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  activity     Activity?           @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  comments     SubmissionComment[]
+}
+
+model SubmissionComment {
+  id           Int        @id @default(autoincrement())
+  submissionId Int
+  authorId     Int
+  message      String
+  createdAt    DateTime   @default(now())
+  author       User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  submission   Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+}
+
+model UserProgress {
+  id          Int     @id @default(autoincrement())
+  studentId   Int
+  lessonId    Int
+  isCompleted Boolean @default(false)
+  lesson      Lesson  @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  student     User    @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, lessonId])
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  message   String
+  type      String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ActionLog {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  action    String
+  target    String
+  details   String?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Announcement {
+  id            Int      @id @default(autoincrement())
+  title         String
+  message       String
+  attachmentUrl String?
+  isPinned      Boolean  @default(false)
+  expiresAt     DateTime
+  authorId      Int
+  courseId      Int?
+  course        Course?  @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  author        User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+}
+
+model Enrollment {
+  batchId   Int
+  studentId Int
+  student   User  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  batch     Batch @relation(fields: [batchId], references: [id], onDelete: Cascade)
+
+  @@id([batchId, studentId])
+}
+
+model BatchTeacher {
+  batchId   Int
+  teacherId Int
+  teacher   User  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  batch     Batch @relation(fields: [batchId], references: [id], onDelete: Cascade)
+
+  @@id([batchId, teacherId])
+}

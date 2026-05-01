@@ -1,0 +1,108 @@
+.achievements-container {
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+
+  .achievements-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 50px;
+
+    h1 {
+      font-size: 2.5rem;
+      color: var(--navy);
+      font-weight: 800;
+    }
+
+    .mascot-guide {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+  }
+
+  .certificates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px;
+      color: var(--primary);
+      
+      p {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+      }
+    }
+
+    .certificate-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+
+      .cert-icon {
+        font-size: 4rem;
+        margin-bottom: 20px;
+      }
+
+      .cert-info {
+        margin-bottom: 25px;
+
+        h3 {
+          font-size: 1.4rem;
+          color: var(--navy);
+          margin-bottom: 10px;
+        }
+
+        p {
+          color: black;
+        }
+
+        .score-badge {
+          background: var(--hood-orange);
+          color: black;
+          padding: 2px 8px;
+          border-radius: 6px;
+          font-weight: bold;
+        }
+
+        .date {
+          font-size: 0.85rem;
+          color: var(--primary);
+          opacity: 0.7;
+          margin-top: 5px;
+        }
+      }
+
+      .btn-download {
+        width: 100%;
+        background: var(--navy);
+        color: white;
+        
+        &:hover {
+          background: var(--primary);
+        }
+      }
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(230, 126, 34, 0.1) 0%, transparent 70%);
+        pointer-events: none;
+      }
+    }
+  }
+}

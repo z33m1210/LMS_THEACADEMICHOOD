@@ -1,0 +1,30 @@
+.next-session-badge.clickable {
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  .link-icon {
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.3s ease;
+  }
+
+  &:hover {
+    transform: scale(1.05) translateY(-2px);
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3);
+
+    .link-icon {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}

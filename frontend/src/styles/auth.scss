@@ -1,0 +1,123 @@
+@import './theme.scss';
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+
+  .login-container {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    z-index: 1;
+    max-width: 900px;
+    width: 100%;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      text-align: center;
+      gap: 20px;
+    }
+  }
+
+  .champ-side {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    @media (max-width: 768px) {
+      justify-content: center;
+      order: 2;
+    }
+  }
+
+  .login-card {
+    flex: 1;
+    @extend .glass-card;
+    max-width: 450px;
+    padding: 50px;
+    text-align: center;
+
+    @media (max-width: 768px) {
+      order: 1;
+      padding: 40px 30px;
+    }
+
+    .logo {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--navy);
+      margin-bottom: 8px;
+      span {
+        color: var(--primary);
+      }
+    }
+
+    h2 {
+      margin-bottom: 40px;
+      color: rgba(44, 62, 80, 0.6);
+      font-weight: 600;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+      text-align: left;
+
+      label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: 700;
+        color: var(--navy);
+        font-size: 0.9rem;
+      }
+
+      input {
+        width: 100%;
+        padding: 16px;
+        background: rgba(255, 255, 255, 0.5);
+        border: 2px solid rgba(255, 255, 255, 0.8);
+        border-radius: 12px;
+        font-size: 1rem;
+        font-family: inherit;
+        transition: all 0.3s ease;
+        color: var(--navy);
+
+        &:focus {
+          outline: none;
+          background: white;
+          border-color: var(--primary);
+          box-shadow: 0 0 0 4px rgba(230, 126, 34, 0.1);
+        }
+
+        &::placeholder {
+          color: rgba(44, 62, 80, 0.3);
+        }
+      }
+    }
+
+    .error-msg {
+      background: rgba(231, 76, 60, 0.1);
+      color: #e74c3c;
+      padding: 14px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border: 1px solid rgba(231, 76, 60, 0.2);
+    }
+
+    .login-btn {
+      @extend .btn-squishy;
+      width: 100%;
+      margin-top: 10px;
+    }
+  }
+}
